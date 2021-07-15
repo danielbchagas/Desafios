@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
+using System.Globalization;
+using System.Collections.Generic;
 
 namespace console
 {
@@ -7,16 +10,19 @@ namespace console
     {
         static void Main(string[] args)
         {
-            var palavra = "ovo";
-
-            var resultado = Eh(palavra);
-
-            Console.WriteLine(resultado);
+            var listaFrases = new List<string>
+            {
+                "A droga do dote é todo da gorda.",
+                "Aí, Lima falou: “Olá, família!”",
+                "Ovo de dinossauro"
+            };
+            
+            listaFrases.ForEach(_ => Console.WriteLine(EhPalindromo(_)));
         }
 
-        static bool Eh(string palavra)
+        static bool EhPalindromo(string palavra)
         {
-            var lista = palavra.ToList();
+            var lista = TrataString(palavra);
             
             while(lista.Count() > 0)
             {
@@ -33,6 +39,17 @@ namespace console
             lista.Clear();
 
             return true;
+        }
+
+        static IList<char> TrataString(string palavra)
+        {
+            return  palavra
+                    .ToLower()
+                    .Normalize(NormalizationForm.FormD)
+                    .Where(ch => char.GetUnicodeCategory(ch) != UnicodeCategory.NonSpacingMark)
+                    .Where(ch => char.GetUnicodeCategory(ch) != UnicodeCategory.SpaceSeparator)
+                    .Where(ch => !new char[]{'.', '“', ',', '!', ':', '”'}.Any(_ => _.Equals(ch)))
+                    .ToList();
         }
     }
 }
