@@ -30,6 +30,8 @@ namespace console
                 else return false;
             }
 
+            lista.Clear();
+
             return true;
         }
     }
