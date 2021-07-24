@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Globalization;
-using System.Collections.Generic;
 
 namespace console
 {
@@ -10,46 +6,13 @@ namespace console
     {
         static void Main(string[] args)
         {
-            var listaFrases = new List<string>
-            {
-                "A droga do dote é todo da gorda.",
-                "Aí, Lima falou: “Olá, família!”",
-                "Ovo de dinossauro"
-            };
+            var verificaNumeros = new NumerosPrimos();
+            var numeros = new int[]{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
             
-            listaFrases.ForEach(_ => Console.WriteLine(EhPalindromo(_)));
-        }
-
-        static bool EhPalindromo(string palavra)
-        {
-            var lista = TrataString(palavra);
-            
-            while(lista.Count() > 0)
+            foreach (var item in numeros)
             {
-                if(lista.Count() == 1) break;
-
-                if(lista.First() == lista.Last())
-                {
-                    lista.RemoveAt(0);
-                    lista.RemoveAt(lista.Count() - 1);
-                }
-                else return false;
+                Console.WriteLine(verificaNumeros.EhPrimo(item) == true ? "Sim" : "Não");
             }
-
-            lista.Clear();
-
-            return true;
-        }
-
-        static IList<char> TrataString(string palavra)
-        {
-            return  palavra
-                    .ToLower()
-                    .Normalize(NormalizationForm.FormD)
-                    .Where(ch => char.GetUnicodeCategory(ch) != UnicodeCategory.NonSpacingMark)
-                    .Where(ch => char.GetUnicodeCategory(ch) != UnicodeCategory.SpaceSeparator)
-                    .Where(ch => !new char[]{'.', '“', ',', '!', ':', '”'}.Any(_ => _.Equals(ch)))
-                    .ToList();
         }
     }
 }
